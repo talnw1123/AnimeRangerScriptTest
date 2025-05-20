@@ -24,7 +24,7 @@ _G.AutoScriptsRunning = true
 
 -- Custom module loader for GitHub
 local function loadModule(moduleName)
-    local url = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/" .. moduleName .. ".lua"
+    local url = "https://raw.githubusercontent.com/talnw1123/AnimeRangerScriptTest/main/" .. moduleName .. ".lua?t=" .. os.time()
     local success, content = pcall(function()
         return game:HttpGet(url)
     end)
