@@ -1,6 +1,6 @@
 -- Main.lua: Entry point for the AutoScripts system
 repeat wait(2) until game:IsLoaded()
-task.wait(2)
+task.wait(15)
 
 -- Services
 local Players = game:GetService("Players")
@@ -24,7 +24,7 @@ _G.AutoScriptsRunning = true
 
 -- Custom module loader for GitHub
 local function loadModule(moduleName)
-    local url = "https://raw.githubusercontent.com/talnw1123/AnimeRangerScriptTest/main/" .. moduleName .. ".lua?t=" .. os.time()
+    local url = "https://raw.githubusercontent.com/talnw1123/AnimeRangerScriptTest/main/source/" .. moduleName .. ".lua?t=" .. os.time()
     local success, content = pcall(function()
         return game:HttpGet(url)
     end)
