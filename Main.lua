@@ -117,8 +117,8 @@ local scriptStates = {
 -- Setup button interactions
 for scriptName, state in pairs(scriptStates) do
     local button = buttons[scriptName]
-    if button then
-        button.toggleButton.MouseButton1Click:Connect(function()
+    if button and button.button then -- ตรวจสอบว่า button.button มีอยู่
+        button.button.MouseButton1Click:Connect(function()
             if not state.enabled then
                 local scriptFunc = ScriptLogic[scriptName]
                 if scriptFunc then
@@ -128,6 +128,8 @@ for scriptName, state in pairs(scriptStates) do
                 ScriptLogic.stopScript(scriptName, scriptStates, buttons, TweenService, Constants.COLORS, _G.priorityScript)
             end
         end)
+    else
+        warn("Button or button.button is nil for script: " .. scriptName)
     end
 end
 
