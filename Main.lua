@@ -1,6 +1,6 @@
 -- Main.lua: Entry point for the AutoScripts system
 repeat wait(2) until game:IsLoaded()
-task.wait(15)
+task.wait(2)
 
 -- Services
 local Players = game:GetService("Players")
