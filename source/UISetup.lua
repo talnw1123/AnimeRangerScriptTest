@@ -472,21 +472,29 @@ end
 
 local function updateButtonStates()
     for scriptName, state in pairs(scriptStates) do
-        if state.enabled then
-            if buttons[scriptName] and buttons[scriptName].status then
+        if buttons[scriptName] and buttons[scriptName].status then
+            if state.enabled then
                 buttons[scriptName].status.Text = "ON"
-                buttons[scriptName].status.TextColor3 = COLORS.TEXT_PRIMARY -- Add check here
-                print("Setting TextColor3 to:", COLORS.TEXT_PRIMARY)
-            end
-        else
-            if buttons[scriptName] and buttons[scriptName].status then
+                if COLORS.TEXT_PRIMARY then
+                    buttons[scriptName].status.TextColor3 = COLORS.TEXT_PRIMARY
+                else
+                    warn("COLORS.TEXT_PRIMARY is nil for " .. scriptName)
+                end
+            else
                 buttons[scriptName].status.Text = "OFF"
-                buttons[scriptName].status.TextColor3 = COLORS.TEXT_DISABLED -- Add check here
-                print("Setting TextColor3 to:", COLORS.TEXT_DISABLED)
+                if COLORS.TEXT_DISABLED then
+                    buttons[scriptName].status.TextColor3 = COLORS.TEXT_DISABLED
+                else
+                    warn("COLORS.TEXT_DISABLED is nil for " .. scriptName)
+                end
             end
+            -- ทำการ Tween...
+            TweenService:Create(buttons[scriptName].knob, TweenInfo.new(0.2), {Position = UDim2.new(0, state.enabled and 23 or 3, 0.5, -9)}):Play()
+            TweenService:Create(buttons[scriptName].bg, TweenInfo.new(0.2), {BackgroundColor3 = state.enabled and COLORS.BUTTON_ON or Color3.fromRGB(50, 50, 60)}):Play()
+            TweenService:Create(buttons[scriptName].button.Parent, TweenInfo.new(0.2), {BackgroundColor3 = state.enabled and COLORS.BUTTON_ON or COLORS.BUTTON_OFF}):Play()
+        else
+            warn("buttons[" .. scriptName .. "].status is nil")
         end
-        -- Tween animations...
     end
 end
-
 return UISetup
