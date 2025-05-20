@@ -139,14 +139,14 @@ function UISetup.setupUI(playerGui, COLORS)
     local mainFrame = Instance.new("Frame")
     mainFrame.Size = UDim2.new(0, 280, 0, 450)
     mainFrame.Position = UDim2.new(0.5, -140, 0.5, -225)
-    mainFrame.BackgroundColor3 = COLORS.BACKGROUND
+    mainFrame.BackgroundColor3 = COLORS and COLORS.BACKGROUND or Color3.fromRGB(40, 40, 60)
     mainFrame.BorderSizePixel = 0
     mainFrame.Parent = screenGui
 
     local shadowFrame = Instance.new("Frame")
     shadowFrame.Size = UDim2.new(1, 10, 1, 10)
     shadowFrame.Position = UDim2.new(0, -5, 0, -5)
-    shadowFrame.BackgroundColor3 = COLORS.SHADOW
+    shadowFrame.BackgroundColor3 = COLORS and COLORS.SHADOW or Color3.fromRGB(20, 20, 30)
     shadowFrame.BorderSizePixel = 0
     shadowFrame.ZIndex = 0
     shadowFrame.Parent = mainFrame
@@ -160,13 +160,13 @@ function UISetup.setupUI(playerGui, COLORS)
     uiCorner.Parent = mainFrame
 
     local uiStroke = Instance.new("UIStroke")
-    uiStroke.Color = COLORS.BORDER
+    uiStroke.Color = COLORS and COLORS.BORDER or Color3.fromRGB(60, 110, 220)
     uiStroke.Thickness = 1.5
     uiStroke.Parent = mainFrame
 
     local headerFrame = Instance.new("Frame")
     headerFrame.Size = UDim2.new(1, 0, 0, 50)
-    headerFrame.BackgroundColor3 = COLORS.HEADER
+    headerFrame.BackgroundColor3 = COLORS and COLORS.HEADER or Color3.fromRGB(50, 50, 80)
     headerFrame.BorderSizePixel = 0
     headerFrame.Parent = mainFrame
 
@@ -177,14 +177,14 @@ function UISetup.setupUI(playerGui, COLORS)
     local headerFix = Instance.new("Frame")
     headerFix.Size = UDim2.new(1, 0, 0.5, 0)
     headerFix.Position = UDim2.new(0, 0, 0.5, 0)
-    headerFix.BackgroundColor3 = COLORS.HEADER
+    headerFix.BackgroundColor3 = COLORS and COLORS.HEADER or Color3.fromRGB(50, 50, 80)
     headerFix.BorderSizePixel = 0
     headerFix.Parent = headerFrame
 
     local headerGradient = Instance.new("UIGradient")
     headerGradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 100)),
-        ColorSequenceKeypoint.new(1, COLORS.HEADER)
+        ColorSequenceKeypoint.new(1, COLORS and COLORS.HEADER or Color3.fromRGB(50, 50, 80))
     })
     headerGradient.Rotation = 45
     headerGradient.Parent = headerFrame
@@ -194,7 +194,7 @@ function UISetup.setupUI(playerGui, COLORS)
     titleLabel.Position = UDim2.new(0, 15, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Text = "Auto Scripts"
-    titleLabel.TextColor3 = COLORS.TEXT_PRIMARY
+    titleLabel.TextColor3 = COLORS and COLORS.TEXT_PRIMARY or Color3.fromRGB(255, 255, 255)
     titleLabel.TextSize = 24
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -203,10 +203,10 @@ function UISetup.setupUI(playerGui, COLORS)
     local versionLabel = Instance.new("TextLabel")
     versionLabel.Size = UDim2.new(0, 40, 0, 20)
     versionLabel.Position = UDim2.new(0, 15, 1, -22)
-    versionLabel.BackgroundColor3 = COLORS.BUTTON_OFF
+    versionLabel.BackgroundColor3 = COLORS and COLORS.BUTTON_OFF or Color3.fromRGB(255, 0, 0)
     versionLabel.BackgroundTransparency = 0.7
     versionLabel.Text = "v1.0"
-    versionLabel.TextColor3 = COLORS.TEXT_SECONDARY
+    versionLabel.TextColor3 = COLORS and COLORS.TEXT_SECONDARY or Color3.fromRGB(200, 200, 200)
     versionLabel.TextSize = 12
     versionLabel.Font = Enum.Font.GothamSemibold
     versionLabel.Parent = headerFrame
@@ -218,9 +218,9 @@ function UISetup.setupUI(playerGui, COLORS)
     local toggleButton = Instance.new("TextButton")
     toggleButton.Size = UDim2.new(0, 34, 0, 34)
     toggleButton.Position = UDim2.new(1, -44, 0.5, -17)
-    toggleButton.BackgroundColor3 = COLORS.BUTTON_OFF
+    toggleButton.BackgroundColor3 = COLORS and COLORS.BUTTON_OFF or Color3.fromRGB(255, 0, 0)
     toggleButton.Text = "-"
-    toggleButton.TextColor3 = COLORS.TEXT_PRIMARY
+    toggleButton.TextColor3 = COLORS and COLORS.TEXT_PRIMARY or Color3.fromRGB(255, 255, 255)
     toggleButton.TextSize = 24
     toggleButton.Font = Enum.Font.GothamBold
     toggleButton.Parent = headerFrame
@@ -234,7 +234,7 @@ function UISetup.setupUI(playerGui, COLORS)
     contentContainer.Position = UDim2.new(0, 10, 0, 55)
     contentContainer.BackgroundTransparency = 1
     contentContainer.ScrollBarThickness = 4
-    contentContainer.ScrollBarImageColor3 = COLORS.BORDER
+    contentContainer.ScrollBarImageColor3 = COLORS and COLORS.BORDER or Color3.fromRGB(60, 110, 220)
     contentContainer.CanvasSize = UDim2.new(0, 0, 0, 800)
     contentContainer.Parent = mainFrame
 
@@ -247,9 +247,9 @@ function UISetup.setupUI(playerGui, COLORS)
     local showButton = Instance.new("TextButton")
     showButton.Size = UDim2.new(0, 45, 0, 45)
     showButton.Position = mainFrame.Position
-    showButton.BackgroundColor3 = COLORS.HEADER
+    showButton.BackgroundColor3 = COLORS and COLORS.HEADER or Color3.fromRGB(50, 50, 80)
     showButton.Text = "+"
-    showButton.TextColor3 = COLORS.TEXT_PRIMARY
+    showButton.TextColor3 = COLORS and COLORS.TEXT_PRIMARY or Color3.fromRGB(255, 255, 255)
     showButton.TextSize = 28
     showButton.Font = Enum.Font.GothamBold
     showButton.Visible = false
@@ -260,14 +260,14 @@ function UISetup.setupUI(playerGui, COLORS)
     showButtonCorner.Parent = showButton
 
     local showButtonStroke = Instance.new("UIStroke")
-    showButtonStroke.Color = COLORS.BORDER
+    showButtonStroke.Color = COLORS and COLORS.BORDER or Color3.fromRGB(60, 110, 220)
     showButtonStroke.Thickness = 2
     showButtonStroke.Parent = showButton
 
     local showButtonGradient = Instance.new("UIGradient")
     showButtonGradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 100)),
-        ColorSequenceKeypoint.new(1, COLORS.HEADER)
+        ColorSequenceKeypoint.new(1, COLORS and COLORS.HEADER or Color3.fromRGB(50, 50, 80))
     })
     showButtonGradient.Rotation = 45
     showButtonGradient.Parent = showButton
@@ -323,7 +323,7 @@ function UISetup.setupUI(playerGui, COLORS)
 
     local saveConfigFrame = Instance.new("Frame")
     saveConfigFrame.Size = UDim2.new(1, 0, 0, 40)
-    saveConfigFrame.BackgroundColor3 = COLORS.SAVE_BUTTON
+    saveConfigFrame.BackgroundColor3 = COLORS and COLORS.SAVE_BUTTON or Color3.fromRGB(70, 120, 200)
     saveConfigFrame.BorderSizePixel = 0
     saveConfigFrame.LayoutOrder = 16
     saveConfigFrame.Parent = contentContainer
@@ -340,7 +340,7 @@ function UISetup.setupUI(playerGui, COLORS)
     local saveGradient = Instance.new("UIGradient")
     saveGradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(90, 150, 255)),
-        ColorSequenceKeypoint.new(1, COLORS.SAVE_BUTTON)
+        ColorSequenceKeypoint.new(1, COLORS and COLORS.SAVE_BUTTON or Color3.fromRGB(70, 120, 200))
     })
     saveGradient.Rotation = 45
     saveGradient.Parent = saveConfigFrame
@@ -348,7 +348,7 @@ function UISetup.setupUI(playerGui, COLORS)
     local saveConfigButton = Instance.new("TextButton")
     saveConfigButton.Size = UDim2.new(1, 0, 1, 0)
     saveConfigButton.BackgroundTransparency = 1
-    saveConfigButton.TextColor3 = COLORS.TEXT_PRIMARY
+    saveConfigButton.TextColor3 = COLORS and COLORS.TEXT_PRIMARY or Color3.fromRGB(255, 255, 255)
     saveConfigButton.Text = "Save Configuration"
     saveConfigButton.Font = Enum.Font.GothamBold
     saveConfigButton.TextSize = 16
@@ -359,7 +359,7 @@ function UISetup.setupUI(playerGui, COLORS)
     saveIcon.Position = UDim2.new(0, 15, 0.5, -10)
     saveIcon.BackgroundTransparency = 1
     saveIcon.Text = "💾"
-    saveIcon.TextColor3 = COLORS.TEXT_PRIMARY
+    saveIcon.TextColor3 = COLORS and COLORS.TEXT_PRIMARY or Color3.fromRGB(255, 255, 255)
     saveIcon.TextSize = 16
     saveIcon.Font = Enum.Font.GothamBold
     saveIcon.Parent = saveConfigFrame
