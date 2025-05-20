@@ -4,7 +4,14 @@ local Players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-local UtilitiesModule = require(script.Parent.UtilitiesModule)
+
+-- ตัวแปร UtilitiesModule จะถูกส่งมาจาก loader.lua
+local UtilitiesModule
+
+-- ฟังก์ชันสำหรับตั้งค่า UtilitiesModule
+function ScriptsModule:SetUtilitiesModule(module)
+    UtilitiesModule = module
+end
 
 local SUMMON_COSTS = { Standard = 500 }
 local TARGET_GEMS = 24000
@@ -16,6 +23,7 @@ local function DebugPrint(...)
     end
 end
 
+-- ต่อจากนี้โค้ดเหมือนเดิม แต่ใช้ UtilitiesModule ที่ส่งมา
 local rangerStages = {
     { world = "OnePiece", chapter = "OnePiece_RangerStage1" },
     { world = "OnePiece", chapter = "OnePiece_RangerStage2" },
