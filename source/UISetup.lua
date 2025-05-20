@@ -121,11 +121,16 @@ function UISetup.createToggleButton(name, layoutOrder, description, COLORS, cont
     statusLabel.Position = UDim2.new(1, -120, 0.5, -10)
     statusLabel.BackgroundTransparency = 1
     statusLabel.Text = "OFF"
-    statusLabel.TextColor3 = COLORS.TEXT_DISABLED
-    statusLabel.Font = Enum.Font.GothamMedium
-    statusLabel.TextSize = 14
-    statusLabel.TextXAlignment = Enum.TextXAlignment.Right
-    statusLabel.Parent = buttonFrame
+    if COLORS.TEXT_DISABLED then
+        statusLabel.TextColor3 = COLORS.TEXT_DISABLED
+    else
+        warn("COLORS.TEXT_DISABLED is nil")
+        statusLabel.TextColor3 = Color3.fromRGB(150, 150, 170) -- ค่าเริ่มต้นชั่วคราว
+    end
+        statusLabel.Font = Enum.Font.GothamMedium
+        statusLabel.TextSize = 14
+        statusLabel.TextXAlignment = Enum.TextXAlignment.Right
+        statusLabel.Parent = buttonFrame
 
     return button, statusLabel, toggleKnob, toggleBg, buttonFrame
 end
