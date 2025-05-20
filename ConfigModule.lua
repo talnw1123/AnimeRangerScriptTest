@@ -5,7 +5,10 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
-function ConfigModule:SaveConfig(fileName, scriptStates, mainFrame, showButton)
+function ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
+    -- ใช้ชื่อผู้เล่นในการสร้างชื่อไฟล์
+    local fileName = "AutoScriptsConfig_" .. player.Name .. ".json"
+    
     local configData = {
         LastMode = nil,
         LastWorld = nil,
@@ -33,11 +36,14 @@ function ConfigModule:SaveConfig(fileName, scriptStates, mainFrame, showButton)
         writefile(fileName, HttpService:JSONEncode(configData))
     end)
     if not success then
-        warn("Failed to save config: " .. err)
+        warn("Failed to save config for " .. player.Name .. ": " .. err)
     end
 end
 
-function ConfigModule:LoadConfig(fileName, scriptStates, mainFrame, showButton)
+function ConfigModule:LoadConfig(scriptStates, mainFrame, showButton)
+    -- ใช้ชื่อผู้เล่นในการอ่านไฟล์
+    local fileName = "AutoScriptsConfig_" .. player.Name .. ".json"
+    
     if not isfile(fileName) then
         return false
     end
@@ -47,7 +53,7 @@ function ConfigModule:LoadConfig(fileName, scriptStates, mainFrame, showButton)
     end)
 
     if not success then
-        warn("Failed to load config: " .. configData)
+        warn("Failed to load config for " .. player.Name .. ": " .. configData)
         return false
     end
 
