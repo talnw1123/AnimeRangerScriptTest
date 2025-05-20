@@ -465,21 +465,22 @@ function UISetup.connectButtons(buttons, scriptStates, ScriptLogic, configSystem
     end
 end
 
-function UISetup.updateButtonStates(buttons, scriptStates, TweenService, COLORS)
+local function updateButtonStates()
     for scriptName, state in pairs(scriptStates) do
         if state.enabled then
-            buttons[scriptName].status.Text = "ON"
-            buttons[scriptName].status.TextColor3 = COLORS.TEXT_PRIMARY
-            TweenService:Create(buttons[scriptName].knob, TweenInfo.new(0.2), {Position = UDim2.new(0, 23, 0.5, -9)}):Play()
-            TweenService:Create(buttons[scriptName].bg, TweenInfo.new(0.2), {BackgroundColor3 = COLORS.BUTTON_ON}):Play()
-            TweenService:Create(buttons[scriptName].frame, TweenInfo.new(0.2), {BackgroundColor3 = COLORS.BUTTON_ON}):Play()
+            if buttons[scriptName] and buttons[scriptName].status then
+                buttons[scriptName].status.Text = "ON"
+                buttons[scriptName].status.TextColor3 = COLORS.TEXT_PRIMARY -- Add check here
+                print("Setting TextColor3 to:", COLORS.TEXT_PRIMARY)
+            end
         else
-            buttons[scriptName].status.Text = "OFF"
-            buttons[scriptName].status.TextColor3 = COLORS.TEXT_DISABLED
-            TweenService:Create(buttons[scriptName].knob, TweenInfo.new(0.2), {Position = UDim2.new(0, 3, 0.5, -9)}):Play()
-            TweenService:Create(buttons[scriptName].bg, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 50, 60)}):Play()
-            TweenService:Create(buttons[scriptName].frame, TweenInfo.new(0.2), {BackgroundColor3 = COLORS.BUTTON_OFF}):Play()
+            if buttons[scriptName] and buttons[scriptName].status then
+                buttons[scriptName].status.Text = "OFF"
+                buttons[scriptName].status.TextColor3 = COLORS.TEXT_DISABLED -- Add check here
+                print("Setting TextColor3 to:", COLORS.TEXT_DISABLED)
+            end
         end
+        -- Tween animations...
     end
 end
 
