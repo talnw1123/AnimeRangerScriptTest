@@ -134,7 +134,23 @@ for scriptName, state in pairs(scriptStates) do
 end
 
 -- Auto-execute scripts based on config
-ScriptLogic.setupAutoExecute(player, scriptStates, configSystem)
+function ScriptLogic.setupAutoExecute(player, scriptStates, configSystem, buttons)
+    local autoExecuteScripts = {
+        "AutoUpgrade", "RetryMap", "AutoPlay", "VotePass", "InspectFinished",
+        "StandardSummon", "ChallengeAndEasterEvent", "VoteNext", "RangerAndEasterEvent",
+        "GogetaMadaraAndZ10", "GogetaAndZ10", "MadaraAndZ10", "AllRangerAndAllChallenge",
+        "GhoulRangerAndGhoulStory", "AutoLeave"
+    }
+    
+    for _, scriptName in ipairs(autoExecuteScripts) do
+        if scriptStates[scriptName].enabled then
+            local scriptFunc = ScriptLogic[scriptName]
+            if scriptFunc then
+                ScriptLogic.startScript(scriptName, scriptFunc, scriptStates, buttons, TweenService, Constants.COLORS, _G.priorityScript)
+            end
+        end
+    end
+end
 
 -- Handle UI toggle
 toggleButton.MouseButton1Click:Connect(function()
