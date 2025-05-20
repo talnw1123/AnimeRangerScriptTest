@@ -1,7 +1,7 @@
 local MainModule = {}
 
-repeat task.wait(2) until game:IsLoaded()
-task.wait(15)
+repeat wait(2) until game:IsLoaded()
+wait(15)
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -293,7 +293,7 @@ function MainModule:Init()
         ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
         local originalColor = saveConfigFrame.BackgroundColor3
         TweenService:Create(saveConfigFrame, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(100, 200, 100)}):Play()
-        task.wait(0.5)
+        wait(0.5)
         TweenService:Create(saveConfigFrame, TweenInfo.new(0.2), {BackgroundColor3 = originalColor}):Play()
     end)
 
