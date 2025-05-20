@@ -24,12 +24,26 @@ _G.AutoScriptsRunning = true
 
 -- Custom module loader for GitHub
 local function loadModule(moduleName)
-    local url = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source/" .. moduleName .. ".lua"
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet(url))()
+    local url = "https://raw.githubusercontent.com/talnw1123/AnimeRangerScriptTest/main/source/" .. moduleName .. ".lua"
+    local success, content = pcall(function()
+        return game:HttpGet(url)
     end)
     if not success then
-        warn("Failed to load module " .. moduleName .. ": " .. tostring(result))
+        warn("Failed to fetch module " .. moduleName .. ": " .. tostring(content))
+        return nil
+    end
+    if content == "" then
+        warn("Empty content for module " .. moduleName)
+        return nil
+    end
+    local func, err = loadstring(content)
+    if not func then
+        warn("Failed to compile module " .. moduleName .. ": " .. tostring(err))
+        return nil
+    end
+    local success, result = pcall(func)
+    if not success then
+        warn("Failed to execute module " .. moduleName .. ": " .. tostring(result))
         return nil
     end
     return result
@@ -46,13 +60,37 @@ end
 
 -- Load modules
 local Constants = require("Constants")
+if not Constants then
+    warn("Constants module not loaded")
+    return
+end
 local UISetup = require("UISetup")
+if not UISetup then
+    warn("UISetup module not loaded")
+    return
+end
 local ConfigSystem = require("ConfigSystem")
+if not ConfigSystem then
+    warn("ConfigSystem module not loaded")
+    return
+end
 local Utility = require("Utility")
+if not Utility then
+    warn("Utility module not loaded")
+    return
+end
 local ScriptLogic = require("ScriptLogic")
+if not ScriptLogic then
+    warn("ScriptLogic module not loaded")
+    return
+end
 
 -- Initialize UI
 local screenGui, mainFrame, showButton, buttons, toggleButton = UISetup.setupUI(playerGui, Constants.COLORS)
+if not screenGui then
+    warn("Failed to initialize UI")
+    return
+end
 
 -- Initialize config system
 local configSystem = ConfigSystem.new(player, HttpService, replicatedStorage, mainFrame, showButton)
@@ -71,30 +109,43 @@ local scriptStates = {
     GogetaMadaraAndZ10 = { enabled = false, coroutine = nil, connection = nil, z10Coroutine = nil },
     GogetaAndZ10 = { enabled = false, coroutine = nil, connection = nil, z10Coroutine = nil },
     MadaraAndZ10 = { enabled = false, coroutine = nil, connection = nil, z10Coroutine = nil },
-    AllRangerAndAllChallenge = { enabled = false, coroutine = nil, connection = nil, challengeCoroutine = nil },
+    AllRangerAndAllChallenge = { enabled = false, coroutine = nil, connection = nil, challengeConnection = nil, easterEventCoroutine = nil },
     GhoulRangerAndGhoulStory = { enabled = false, coroutine = nil, connection = nil, storyCoroutine = nil },
     AutoLeave = { enabled = false, coroutine = nil, connection = nil }
 }
 
--- Initialize priority script
-local priorityScript = nil
-
--- Setup button connections
-UISetup.connectButtons(buttons, scriptStates, ScriptLogic, configSystem, TweenService, Constants.COLORS, priorityScript)
-
--- Setup auto-execute
-ScriptLogic.setupAutoExecute(player, scriptStates, configSystem)
-
--- Load configuration and initialize scripts
-if configSystem:loadConfig() then
-    UISetup.updateButtonStates(buttons, scriptStates, TweenService, Constants.COLORS)
-end
-
+-- Setup button interactions
 for scriptName, state in pairs(scriptStates) do
-    if state.enabled then
-        local scriptFunc = ScriptLogic[scriptName]
-        if scriptFunc then
-            ScriptLogic.startScript(scriptName, scriptFunc, scriptStates, buttons, TweenService, Constants.COLORS, priorityScript)
-        end
+    local button = buttons[scriptName]
+    if button then
+        button.toggleButton.MouseButton1Click:Connect(function()
+            if not state.enabled then
+                local scriptFunc = ScriptLogic[scriptName]
+                if scriptFunc then
+                    ScriptLogic.startScript(scriptName, scriptFunc, scriptStates, buttons, TweenService, Constants.COLORS, _G.priorityScript)
+                end
+            else
+                ScriptLogic.stopScript(scriptName, scriptStates, buttons, TweenService, Constants.COLORS, _G.priorityScript)
+            end
+        end)
     end
 end
+
+-- Auto-execute scripts based on config
+ScriptLogic.setupAutoExecute(player, scriptStates, configSystem)
+
+-- Handle UI toggle
+toggleButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+    showButton.Visible = not mainFrame.Visible
+end)
+
+-- Cleanup on player removal
+player.AncestryChanged:Connect(function()
+    if not player:IsDescendantOf(game) then
+        if playerGui:FindFirstChild("AutoScriptsUI") then
+            playerGui.AutoScriptsUI:Destroy()
+        end
+        _G.AutoScriptsRunning = nil
+    end
+end)
