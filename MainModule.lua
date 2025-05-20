@@ -224,7 +224,7 @@ function MainModule:Init()
     UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             isDragging = false
-            ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+            ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
         end
     end)
 
@@ -256,7 +256,7 @@ function MainModule:Init()
     UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             isShowButtonDragging = false
-            ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+            ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
         end
     end)
 
@@ -264,13 +264,13 @@ function MainModule:Init()
         mainFrame.Visible = false
         showButton.Visible = true
         showButton.Position = mainFrame.Position
-        ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+        ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
     end)
 
     showButton.MouseButton1Click:Connect(function()
         mainFrame.Visible = true
         showButton.Visible = false
-        ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+        ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
     end)
 
     for scriptName, buttonData in pairs(self.buttons) do
@@ -279,14 +279,18 @@ function MainModule:Init()
                 self:StopScript(scriptName)
             else
                 local scriptFunc = self.scriptFunctions[scriptName]
-                self:StartScript(scriptName, scriptFunc)
+                if scriptFunc then
+                    self:StartScript(scriptName, scriptFunc)
+                else
+                    warn("No script function found for " .. scriptName)
+                end
             end
-            ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+            ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
         end)
     end
 
     saveConfigButton.MouseButton1Click:Connect(function()
-        ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+        ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
         local originalColor = saveConfigFrame.BackgroundColor3
         TweenService:Create(saveConfigFrame, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(100, 200, 100)}):Play()
         task.wait(0.5)
@@ -295,7 +299,7 @@ function MainModule:Init()
 
     Players.PlayerRemoving:Connect(function(playerLeaving)
         if playerLeaving == player then
-            ConfigModule:SaveConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton)
+            ConfigModule:SaveConfig(scriptStates, mainFrame, showButton)
         end
     end)
 
@@ -311,10 +315,10 @@ function MainModule:Init()
                     self:StartScript(scriptName, scriptFunc)
                 end
             end
-        end
+        end)
     end)
 
-    if ConfigModule:LoadConfig("AutoScriptsConfig.json", scriptStates, mainFrame, showButton) then
+    if ConfigModule:LoadConfig(scriptStates, mainFrame, showButton) then
         for scriptName, state in pairs(scriptStates) do
             UIModule:UpdateButtonState(self.buttons[scriptName], state.enabled)
             if state.enabled then
