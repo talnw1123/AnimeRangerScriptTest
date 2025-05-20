@@ -1,3 +1,5 @@
+
+
 local function loadModule(url)
     local success, result = pcall(function()
         return loadstring(game:HttpGet(url))()
@@ -10,7 +12,7 @@ local function loadModule(url)
     end
 end
 
-local baseUrl = "https://raw.githubusercontent.com/talnw1123/AnimeRangerScriptTest/refs/heads/main/"
+local baseUrl = "https://raw.githubusercontent.com/talnw1123/AnimeRangerScriptTest/main/"
 local UIModule = loadModule(baseUrl .. "UIModule.lua")
 local ConfigModule = loadModule(baseUrl .. "ConfigModule.lua")
 local UtilitiesModule = loadModule(baseUrl .. "UtilitiesModule.lua")
